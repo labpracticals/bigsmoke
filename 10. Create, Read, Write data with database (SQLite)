@@ -1,0 +1,80 @@
+          activity_main.xml:
+          
+ <?xml version="1.0" encoding="utf-8"?>
+ <androidx.constraintlayout.widget.ConstraintLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:id="@+id/main"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ tools:context=".MainActivity">
+ <LinearLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ android:orientation="vertical"
+ android:padding="16dp"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent">
+ <EditText android:id="@+id/input"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:hint="Enter name" />
+ <Button android:id="@+id/save"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="Save" />
+ <TextView android:id="@+id/output"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content" />
+</LinearLayout>
+ </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+         MainActivity.java
+         
+ package com.example.sqldbapp;
+ import android.database.Cursor;
+ import android.database.sqlite.SQLiteDatabase;
+ import android.os.Bundle;
+ import android.widget.Button;
+ import android.widget.EditText;
+ import android.widget.TextView;
+ import androidx.activity.EdgeToEdge;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.core.graphics.Insets;
+ import androidx.core.view.ViewCompat;
+ import androidx.core.view.WindowInsetsCompat;
+ public class MainActivity extends AppCompatActivity {
+ TextView output;
+ SQLiteDatabase db;
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ EdgeToEdge.enable(this);
+ setContentView(R.layout.activity_main);
+ ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets)-> {
+ Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+ v.setPadding(systemBars.left, systemBars.top, systemBars.right,
+ systemBars.bottom);
+ return insets;
+ });
+ EditText input = findViewById(R.id.input);
+ output= findViewById(R.id.output);
+ Button save = findViewById(R.id.save);
+ // Create/open database and table
+db = openOrCreateDatabase("MyDB", MODE_PRIVATE, null);
+ db.execSQL("CREATE TABLE IF NOT EXISTS student(name TEXT)");
+ // Save name to database
+ save.setOnClickListener(v-> {
+ String name = input.getText().toString();
+ db.execSQL("INSERT INTO student VALUES('" + name + "')");
+ showNames();
+ });
+ showNames(); // Show existing names
+ }
+ void showNames() {
+ Cursor c = db.rawQuery("SELECT * FROM student", null);
+ StringBuilder names = new StringBuilder();
+ while (c.moveToNext()) names.append(c.getString(0)).append("\n");
+ output.setText(names.toString());
+ }
+ }
