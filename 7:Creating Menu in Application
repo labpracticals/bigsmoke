@@ -1,0 +1,84 @@
+        Step 1: Create menu folder
+
+ 1. Go to the 'res' directory in Android Studio.
+ 2. Right-click on 'res' > New > Android Resource Directory.
+ 3. In the 'Resource type' dropdown, select 'menu'.
+ 4. Click 'OK'.
+
+       Step 2: Create menu_main.xml file
+
+ 1. Right-click on the newly created 'menu' folder.
+ 2. Select New > Menu Resource File.
+ 3. Name the file as menu_main.xml.
+4. Click 'OK'.
+
+        Step 3: Add menu items to menu_main.xml
+        write the following code inside menu_main.xml:
+
+ <menu xmlns:android="http://schemas.android.com/apk/res/android">
+ <item
+ android:id="@+id/action_search"
+ android:title="Search"
+ android:showAsAction="ifRoom" />
+ <item
+ android:id="@+id/action_settings"
+ android:title="Settings"
+ android:showAsAction="ifRoom" />
+ </menu>
+
+           Step 4: Add Toolbar using Palette
+
+ 1. Open activity_main.xml.
+ 2. Go to the 'Palette' on the left.
+ 3. Under 'Widgets', drag and drop 'Toolbar' into your layout.
+ 4. Give it an ID like: android:id="@+id/toolbar".
+     
+           Step 5: Java Code for Toolbar and Menu
+
+ Use the following code in MainActivity.java:
+ package com.example.actionbarr;
+ import android.os.Bundle;
+ import android.widget.Toast;
+ import androidx.activity.EdgeToEdge;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.appcompat.widget.Toolbar;
+ import androidx.core.graphics.Insets;
+ import androidx.core.view.ViewCompat;
+ import androidx.core.view.WindowInsetsCompat;
+public class MainActivity extends AppCompatActivity {
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ EdgeToEdge.enable(this);
+ setContentView(R.layout.activity_main);
+ ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v,
+ insets)-> {
+ Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+ v.setPadding(systemBars.left, systemBars.top, systemBars.right,
+ systemBars.bottom);
+ return insets;
+ });
+ // Initialize and set the toolbar
+ Toolbar toolbar = findViewById(R.id.toolbar);
+ setSupportActionBar(toolbar);
+ }
+ // Menu creation
+ @Override
+ public boolean onCreateOptionsMenu(android.view.Menu menu) {
+ getMenuInflater().inflate(R.menu.menu_main, menu);
+ return true;
+ }
+ // Menu item click actions
+ @Override
+ public boolean onOptionsItemSelected(android.view.MenuItem item) {
+ int id = item.getItemId();
+ if (id == R.id.action_search) {
+ Toast.makeText(this, "Search clicked", Toast.LENGTH_SHORT).show();
+ return true;
+ } else if (id == R.id.action_settings) {
+ Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
+ return true;
+ }
+ return super.onOptionsItemSelected(item);
+ }
+}
