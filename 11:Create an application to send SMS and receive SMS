@@ -1,0 +1,93 @@
+     Permissions Required
+
+ Add the following permissions inside the AndroidManifest.xml file before <application:
+ <uses-permission android:name="android.permission.SEND_SMS"/>
+ <uses-permission android:name="android.permission.RECEIVE_SMS"
+ />
+
+       Layout File: activity_main.xml
+
+ <?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ android:id="@+id/main"
+ android:layout_width="match_parent"
+android:layout_height="match_parent"
+ android:orientation="vertical"
+ android:padding="20dp">
+ <EditText
+ android:id="@+id/e1"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:hint="Enter Mobile Number"
+ android:inputType="phone" />
+ <EditText
+ android:id="@+id/e2"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:hint="Enter Message"
+ android:inputType="textMultiLine" />
+ <Button
+ android:id="@+id/btn"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="Send SMS" />
+ </LinearLayout>
+
+           Java Code: MainActivity.java
+
+ package com.example.smsapp;
+ import android.app.PendingIntent;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.telephony.SmsManager;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.EditText;
+ import android.widget.Toast;
+ import androidx.activity.EdgeToEdge;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.core.graphics.Insets;
+ import androidx.core.view.ViewCompat;
+ import androidx.core.view.WindowInsetsCompat;
+ public class MainActivity extends AppCompatActivity {
+@Override
+ protected void onCreate(Bundle savedInstanceState) {
+ super.onCreate(savedInstanceState);
+ EdgeToEdge.enable(this);
+ setContentView(R.layout.activity_main);
+ ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets)-> {
+ Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+ v.setPadding(systemBars.left, systemBars.top, systemBars.right,
+ systemBars.bottom);
+ return insets;
+ });
+ EditText e1 = findViewById(R.id.e1);
+ EditText e2 = findViewById(R.id.e2);
+ Button btn = findViewById(R.id.btn);
+ btn.setOnClickListener(view-> {
+ String mobile_no = e1.getText().toString();
+ String message = e2.getText().toString();
+ Intent my_intent = new Intent(getApplicationContext(), MainActivity.class);
+ PendingIntent my_pen = PendingIntent.getActivity(getApplicationContext(), 0,
+ my_intent, PendingIntent.FLAG_IMMUTABLE);
+ SmsManager mymessage = SmsManager.getDefault();
+ mymessage.sendTextMessage(mobile_no, null, message, my_pen, null);
+ Toast.makeText(MainActivity.this, "Message sent",
+ Toast.LENGTH_SHORT).show();
+ });
+ }
+ }
+
+          Steps to Test the App on a Physical Device
+
+ Enable USB Debugging on Android Phone:
+ 1. Open Settings → About Phone.
+ 2. Tap Build Number 7 times to enable Developer Options.
+ 3. Go back to Settings → Developer Options.
+ 4. Enable USB Debugging.
+Connect to Android Studio:
+ 1. Connect your phone to the computer using USB.
+ 2. Go to Settings > Apps
+ 3. Scroll to find SMSApp
+ 4. In SMSApp->permissions->click on SMS->Select Allow
