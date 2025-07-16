@@ -1,0 +1,42 @@
+      Procedure:
+
+ 1. Open Android Studio and create a new project.
+ 2. Choose an Empty Views Activity and name it MainActivity.
+ 3. Open activity_main.xml.
+ 4. Add two EditText components for username and password.
+ 5. Add one Button component labeled “Login”.
+ 6. Use proper layout structure (e.g., LinearLayout or ConstraintLayout).
+ 7. Set hints and input types for EditText.
+ 8. Apply necessary styling like padding, margin, and alignment.
+ 9. Run the app to verify the layout visually.
+
+      XMLLayout(activity_main.xml):
+
+ <?xml version="1.0" encoding="utf-8"?>
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:orientation="vertical"
+ android:padding="24dp"
+ android:gravity="center"
+ android:background="#FFFFFF">
+ <EditText
+ android:id="@+id/username"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:hint="Username"
+ android:inputType="textPersonName" />
+ <EditText
+ android:id="@+id/password"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:hint="Password"
+ android:inputType="textPassword"
+ android:layout_marginTop="12dp" />
+ <Button
+ android:id="@+id/loginButton"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="Login"
+ android:layout_marginTop="18dp" />
+ </LinearLayout>
